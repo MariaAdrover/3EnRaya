@@ -1,8 +1,7 @@
 package pkg3enraya;
 
 public class Moviment {
-    
-    private boolean blancas;
+    private int fitxa;
     private int fila;    
     private int columna;    
     private Jugador jugador; 
@@ -13,8 +12,8 @@ public class Moviment {
         this.jugador = jugador;
     }
     
-    public boolean getBlancas() {
-       return this.blancas;
+    public int getFitxa() {
+       return this.fitxa;
     }
     
     public int getColumna() {
@@ -29,7 +28,7 @@ public class Moviment {
         return this.jugador;
     }
     
-    public void setBlancas(boolean blancas) {
-        this.blancas = blancas;
+    public void setFitxa(int f) {
+        this.fitxa = f;
     }
 }

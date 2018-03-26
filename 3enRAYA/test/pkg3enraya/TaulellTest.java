@@ -51,7 +51,7 @@ public class TaulellTest {
         Moviment moviment = null;
         Taulell instance = null;
         boolean expResult = false;
-        boolean result = instance.validarMovimiento(moviment);
+        boolean result = instance.validarMoviment(moviment);
         assertEquals(expResult, result);
         fail("The test case is a prototype.");
     }

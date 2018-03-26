@@ -30,21 +30,25 @@ public class Sessio {
 
         switch (nivel) {
             case 0:
-                jugadorIA = new IA0("CPU");
+                jugadorIA = new IA0("IA0");
                 break;
             case 1:
-                jugadorIA = new IA1("CPU");
+                jugadorIA = new IA1("IA1");
                 break;
             case 2:
-                jugadorIA = new IA2("CPU");
+                jugadorIA = new IA2("IA2");
                 break;
             case 3:
-                jugadorIA = new IA3("CPU");
+                jugadorIA = new IA3("IA3");
                 break;
             case 4:
-                jugadorIA = new IA4("CPU");
+                jugadorIA = new IA4("IA4");
                 break;
             default:
+                jugadorIA = new IA4("IA4");
+                System.out.println("");
+                System.out.println("------------------------ Jugarás en el nivel más difícil :-) --------------------");
+                System.out.println("");
                 break;
         }
 
@@ -52,52 +56,71 @@ public class Sessio {
     }
 
     private Partida crearPartida(Jugador j1, Jugador j2) {
-        Partida p = new Partida(this, this.ranking, j1, j2);
+        Partida p = new Partida(this.ranking, j1, j2);
         this.partida = p;
 
         return p;
     }
 
     private void mostrarDespedida() {
-        System.out.println("************************************");
-        System.out.println("*        ¡Hasta la próxima!        *");
-        System.out.println("************************************");
+        System.out.println("");
+        System.out.println("");
+        System.out.println("                      ************************************");
+        System.out.println("                      *        ¡Hasta la próxima!        *");
+        System.out.println("                      ************************************");
 
         for (int i = 0; i < 10; i++) {
-            System.out.println("            Adioooooooos");
+            System.out.println("                      *            Adioooooooos          *");
         }
-        System.out.println("************************************");
-
+        System.out.println("                      ************************************");
     }
 
-    private void mostrarRanking() {
-        this.ranking.mostrarRanking();
-        this.iniciarSessio();
-    }
-
-    private void nuevaPartida() {
-        Partida partida;
-        int dificultad;
-        
-        // Triar nivell de dificultat
-        dificultad = this.triarDicicultat();
-        this.jugadors[1] = this.crearIA(dificultad);
-
-        if (this.sorteigTorn()) {
-            System.out.println("                  Te ha tocado jugar con blancas. Empiezas tú.");
-            partida = this.crearPartida(this.jugadors[0], this.jugadors[1]);
-            this.partida.setTurnos(); // Mejor aqui o en crear partida??
+    private void mostrarTorn(boolean blanques) {
+        if (blanques) {
+            System.out.println("");
+            System.out.println("*********************************************************************************");
+            System.out.println("*                   Te ha tocado jugar con blancas. Empiezas tú.                *");
+            System.out.println("*********************************************************************************");
         } else {
-            System.out.println("                   Te ha tocado jugar con negras. Empieza la CPU.");
-            partida = this.crearPartida(this.jugadors[1], this.jugadors[0]);
-            this.partida.setTurnos(); // Mejor aqui o en crear partida??
+            System.out.println("");
+            System.out.println("*********************************************************************************");
+            System.out.println("*                   Te ha tocado jugar con negras. Empieza la CPU.              *");
+            System.out.println("*********************************************************************************");
         }
-        System.out.println("                            ¡¡¡¡ Suerte !!!!");
-        System.out.println("");
-        partida.jugar();
     }
 
-    // Devuelve true si tocan blancas
+    private void prepararPartida() {
+        Partida partida;
+        int nivellIA = -1;
+
+        // Triar nivell de dificultat
+        while (nivellIA == -1) {
+            try {
+                nivellIA = this.triarDicicultat();
+            } catch (InputMismatchException e) {
+                System.out.println("");
+                System.out.println("-------------------- HAS DE PULSAR UN NÚMERO: 0, 1, 2, 3 o 4 --------------------");
+                System.out.println("");
+            }
+        }
+        // Crear IA
+        this.jugadors[1] = this.crearIA(nivellIA);
+
+        // Fer sorteig i crear partida
+        if (this.sorteigTorn()) {
+            this.mostrarTorn(true);
+            partida = this.crearPartida(this.jugadors[0], this.jugadors[1]);
+        } else {
+            this.mostrarTorn(false);
+            partida = this.crearPartida(this.jugadors[1], this.jugadors[0]);
+        }
+        this.partida.setTurnos(); // Millor aqui o en crear partida??
+        System.out.println("                                 ¡¡¡¡ Suerte !!!!");
+        System.out.println("");
+        this.partida.jugar(); // Millor aquí o en iniciarSessio()?
+    }
+
+    // Si torna true el jugador humà durà ses blanques
     private boolean sorteigTorn() {
         boolean blancas;
         double d;
@@ -110,7 +133,7 @@ public class Sessio {
     }
 
     private int triarDicicultat() {
-        int opcio;
+        int nivellIA;
         Scanner sc = new Scanner(System.in);
         System.out.println("");
         System.out.println("                               NIVEL DE DIFICULTAD");
@@ -123,14 +146,15 @@ public class Sessio {
         System.out.println("                                 4 - Muy difícil");
         System.out.println("");
         System.out.print("                         Elige el nivel de dificultad --> ");
-        opcio = sc.nextInt();
+        nivellIA = sc.nextInt();
 
-        return opcio;
+        return nivellIA;
     }
 
     private int verMenu() {
         int opcion;
         Scanner opcioTriada;
+
         System.out.println("");
         System.out.println("");
         System.out.println("");
@@ -147,9 +171,8 @@ public class Sessio {
         System.out.println("*                                                                               *");
         System.out.println("*********************************************************************************");
         System.out.println("");
-        System.out.print("                         Elige una opción: 1, 2 o 3 --> ");
+        System.out.print("                        Elige una opción: 1, 2 o 3 --> ");
 
-        // Triar opció
         opcioTriada = new Scanner(System.in);
         opcion = opcioTriada.nextInt();
 
@@ -174,21 +197,34 @@ public class Sessio {
     }
 
     public void iniciarSessio() {
-        int opcion = this.verMenu();
+        boolean sortir = false;
 
-        switch (opcion) {
-            case 1:
-                this.nuevaPartida();
-                break;
-            case 2:
-                this.mostrarRanking();
-                break;
-            case 3:
-                this.mostrarDespedida();
-                break;
-            default:
-                System.out.println("Opció desconeguda!!!");
-                break;
+        while (!sortir) {
+
+            try {
+                int opcion = this.verMenu();
+
+                switch (opcion) {
+                    case 1:
+                        this.prepararPartida();
+                        break;
+                    case 2:
+                        this.ranking.mostrarRanking();
+                        break;
+                    case 3:
+                        this.mostrarDespedida();
+                        sortir = true;
+                        break;
+                    default:
+                        System.out.println("");
+                        System.out.println("----------------------------- Opció desconeguda!!! -------------------------------");
+                        break;
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("");
+                System.out.println("----------------------- HAS DE PULSAR UN NÚMERO: 1, 2 o 3 -----------------------");
+                System.out.println("");
+            }
         }
     }
 

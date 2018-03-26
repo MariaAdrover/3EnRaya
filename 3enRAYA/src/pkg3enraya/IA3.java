@@ -1,27 +1,22 @@
 package pkg3enraya;
 
-public class IA3 extends IA2{
+public class IA3 extends IA2 {
 
     public IA3(String nombre) {
         super(nombre);
     }
-    
-    public Moviment intentarNoPerdre() {
-        
-        return this.taulell.getMovimentGuanyador(this, false);        
-    }
 
     @Override
-    public Moviment moviment() {
-        Moviment moviment = this.intentarGuanyar();
-        if (moviment == null) {            
-            moviment = this.intentarNoPerdre();
-            if (moviment == null) {
-                moviment = this.calcularMillorMoviment();
-            }
+    public Moviment moviment() {        
+        if (this.getMovimentGuanyador(super.getTorn()) != null) {
+            return this.getMovimentGuanyador(super.getTorn()); // =============>
         }
         
-        return moviment;
+        if (this.getMovimentGuanyador(this.getAdversari()) != null) {
+            return this.getMovimentGuanyador(this.getAdversari()); // =========>
+        }
+
+        return this.calcularMillorMoviment();
     }
-    
+
 }

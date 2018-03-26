@@ -4,7 +4,6 @@ public class Ranking {
     public int empats;    
     public int guanyadesJugador;
     public int partidesJugades;
-    // No necessito navegabilitat de ranking a sessio...
  
     public Ranking(){
         this.partidesJugades = 0;
@@ -28,15 +27,15 @@ public class Ranking {
         int derrotasJugador = this.partidesJugades - this.empats - this.guanyadesJugador;
         
         System.out.println("");
-        System.out.println("                            ***************************");
-        System.out.println("                                       RANKING");
-        System.out.println("                            ***************************");        
+        System.out.println("                           ***************************");
+        System.out.println("                                      RANKING");
+        System.out.println("                           ***************************");        
         System.out.println("");
-        System.out.println("                                Partidas jugadas: " + this.partidesJugades);
-        System.out.println("                                     Empates: " + this.empats);
-        System.out.println("                                Victorias Humano: " + this.guanyadesJugador);
-        System.out.println("                                 Derrotas Humano: " + derrotasJugador);
-        System.out.println("                                  Victorias CPU: " + derrotasJugador);
-        System.out.println("                                   Derrotas CPU: " + this.guanyadesJugador);
+        System.out.println("                               Partidas jugadas: " + this.partidesJugades);
+        System.out.println("                                    Empates: " + this.empats);
+        System.out.println("                               Victorias Humano: " + this.guanyadesJugador);
+        System.out.println("                                Derrotas Humano: " + derrotasJugador);
+        System.out.println("                                 Victorias IA: " + derrotasJugador);
+        System.out.println("                                  Derrotas IA: " + this.guanyadesJugador);
     }
 }

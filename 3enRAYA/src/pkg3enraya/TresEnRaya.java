@@ -1,8 +1,5 @@
 package pkg3enraya;
 
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-
 public class TresEnRaya {
     
     public static void mostrarInstrucciones() {
