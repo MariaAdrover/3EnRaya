@@ -1,9 +1,9 @@
 package pkg3enraya;
 
 public class Ranking {     
-    public int empats;    
-    public int guanyadesJugador;
-    public int partidesJugades;
+    private int empats;    
+    private int guanyadesJugador;
+    private int partidesJugades;
  
     public Ranking(){
         this.partidesJugades = 0;

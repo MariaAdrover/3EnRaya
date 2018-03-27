@@ -90,24 +90,7 @@ public class Taulell {
         valor = this.caselles[fila][columna];
         
         return valor;
-    }
-
-    public int[] getCasillaLibre() { 
-        int[] moviment = new int[2];
-
-        for (int f = 0; f < 3; f++) {
-            for (int c = 0; c < 3; c++) {
-                if (this.caselles[f][c] == -1) {
-                    moviment[0] = f;
-                    moviment[1] = c;
-                    f = 2;
-                    c = 2;
-                }
-            }
-        }
-
-        return moviment;
-    }    
+    }   
     
     public void mostrarTaulell() {
         System.out.println("");

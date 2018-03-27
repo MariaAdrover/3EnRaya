@@ -19,7 +19,7 @@ public class Partida {
         jugadors = new Jugador[2];
         this.addJugadores(j1, j2);
 
-        this.jugadaActual = 1;
+        this.jugadaActual = 0;
     }
 
     private void addJugadores(Jugador j1, Jugador j2) {
@@ -39,13 +39,15 @@ public class Partida {
 
     private void gestionarMovimentIncorrecte(int torn) {
         int adversari = this.jugadors[torn].getAdversari();
-        System.out.println("                     El movimiento propuesto no es válido.");
+        System.out.println("");
+        System.out.println("                        El movimiento propuesto no es válido.");
         this.mostrarGuanyador(adversari);
         this.ranking.guanyar(this.jugadors[adversari]);
     }
 
     private void gestionarTablas() {
         this.taulell.mostrarTaulell();
+        System.out.println("");
         System.out.println(":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::");
         System.out.println("                        No hay más movimientos posibles.");
         System.out.println("                       La partida ha terminado en tablas.");
@@ -74,37 +76,38 @@ public class Partida {
     }
 
     public void jugar() {
-        boolean finPartida = false;
-        int tornActual;
+        boolean movimentValid = true;
+        int tornActual = 0;
         Moviment moviment;
 
-        while (!finPartida) {
-            // Actualitzar torn
+        while (((this.taulell.comprovarGuanyador() == -1)
+                && !this.taulell.comprovarPle()) && movimentValid) {
+            // Preparar torn
+            this.jugadaActual++;
             tornActual = (this.jugadaActual + 1) % 2;
             this.mostrarInfoTorn(tornActual);
             this.taulell.mostrarTaulell();
-            // Sol·licitar moviment
+
+            // Demanar moviment
             moviment = jugadors[tornActual].moviment();
             moviment.setFitxa(tornActual);
-
-            if (!this.taulell.validarMoviment(moviment)) {
-                finPartida = true;
-                this.gestionarMovimentIncorrecte(tornActual);
-            } else {
+            // Validar moviment
+            if (this.taulell.validarMoviment(moviment)) {
+                // Moure
                 this.taulell.moure(moviment);
-            }
-
-            if (!finPartida && this.taulell.comprovarGuanyador() != -1) {
-                finPartida = true;
-                this.gestionarGuanyador(tornActual);
-            }
-
-            if (!finPartida && this.taulell.comprovarPle()) {
-                finPartida = true;
-                this.gestionarTablas();
             } else {
-                this.jugadaActual++;
+                movimentValid = false;
+                this.gestionarMovimentIncorrecte(tornActual);
             }
+        }
+        
+        // Si hi ha un guanyador...
+        if (this.taulell.comprovarGuanyador() != -1) {
+            this.gestionarGuanyador(tornActual);
+        }
+        // Si el taulell és ple I NO HI HA UN GUANYADOR...
+        if ((this.taulell.comprovarGuanyador() == -1) && this.taulell.comprovarPle()) {
+            this.gestionarTablas();
         }
     }
 

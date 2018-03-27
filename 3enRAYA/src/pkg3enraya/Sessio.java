@@ -90,34 +90,35 @@ public class Sessio {
     }
 
     private void prepararPartida() {
-        Partida partida;
-        int nivellIA = -1;
+        boolean iaCreada = false;
+        int nivellIA;
 
-        // Triar nivell de dificultat
-        while (nivellIA == -1) {
+        // Triar nivell de dificultat i crear IA
+        while (!iaCreada) {
             try {
-                nivellIA = this.triarDicicultat();
+                nivellIA = this.triarDificultat();
+                this.jugadors[1] = this.crearIA(nivellIA);
+                iaCreada = true;
             } catch (InputMismatchException e) {
                 System.out.println("");
                 System.out.println("-------------------- HAS DE PULSAR UN NÚMERO: 0, 1, 2, 3 o 4 --------------------");
                 System.out.println("");
             }
         }
-        // Crear IA
-        this.jugadors[1] = this.crearIA(nivellIA);
 
         // Fer sorteig i crear partida
         if (this.sorteigTorn()) {
             this.mostrarTorn(true);
-            partida = this.crearPartida(this.jugadors[0], this.jugadors[1]);
+            this.partida = this.crearPartida(this.jugadors[0], this.jugadors[1]); // Es necessari fer un setter?
         } else {
             this.mostrarTorn(false);
-            partida = this.crearPartida(this.jugadors[1], this.jugadors[0]);
+            this.partida = this.crearPartida(this.jugadors[1], this.jugadors[0]);
         }
-        this.partida.setTurnos(); // Millor aqui o en crear partida??
-        System.out.println("                                 ¡¡¡¡ Suerte !!!!");
-        System.out.println("");
-        this.partida.jugar(); // Millor aquí o en iniciarSessio()?
+        
+        // Asignar el torn que correspon a cada jugador
+        this.partida.setTurnos();
+        // Millor aqui, en crearPartida, en el constructor de Partida
+        // o directament fent setTorn a cada Jugador, llevant el mètode setTurnos de Partida?
     }
 
     // Si torna true el jugador humà durà ses blanques
@@ -132,7 +133,7 @@ public class Sessio {
         return blancas;
     }
 
-    private int triarDicicultat() {
+    private int triarDificultat() {
         int nivellIA;
         Scanner sc = new Scanner(System.in);
         System.out.println("");
@@ -207,6 +208,7 @@ public class Sessio {
                 switch (opcion) {
                     case 1:
                         this.prepararPartida();
+                        this.partida.jugar(); // Millor aquí o en prepararPartida()?
                         break;
                     case 2:
                         this.ranking.mostrarRanking();

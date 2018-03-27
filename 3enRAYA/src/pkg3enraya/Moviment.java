@@ -24,10 +24,6 @@ public class Moviment {
        return this.fila;
     }
     
-    public Jugador getJugador() {
-        return this.jugador;
-    }
-    
     public void setFitxa(int f) {
         this.fitxa = f;
     }

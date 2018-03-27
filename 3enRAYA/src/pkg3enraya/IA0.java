@@ -9,8 +9,16 @@ public class IA0 extends Jugador {
     
     @Override
     public Moviment moviment() {
-        int[] mov = this.taulell.getCasillaLibre();        
-        Moviment moviment = new Moviment(this, mov[0], mov[1]); 
+        Moviment moviment = null;
+
+        for (int f = 0; f < 3; f++) {
+            for (int c = 0; c < 3; c++) {
+                if (this.taulell.getCasilla(f, c) == -1) {
+                    moviment = new Moviment(this, f, c);
+                    return moviment; // ===== Ha trobat una casella buida =====>
+                }
+            }
+        }
         
         return moviment;
     }
